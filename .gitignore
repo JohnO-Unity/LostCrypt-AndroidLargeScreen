@@ -56,6 +56,9 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# password protected files
+user.keystore
+
 # Builds
 *.apk
 *.aab
