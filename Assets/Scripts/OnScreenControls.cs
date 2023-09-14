@@ -9,6 +9,10 @@ public class OnScreenControls : MonoBehaviour
     {
         bool isMobile = SystemInfo.deviceType == DeviceType.Handheld;
 
+#if SIMULATE_MOBILE
+        isMobile = true;
+#endif
+
         if (controlsCanvas != null)
             controlsCanvas.gameObject.SetActive(isMobile);
 

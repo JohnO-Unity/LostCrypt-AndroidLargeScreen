@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Step1
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: bfd3f357eb4a64d5faf8f3346200600e, type: 3}
+  title: 'Getting started with the Android Large Screen changes'
+  sections:
+  - heading: Overview
+    text: 'The first step to suppore Large Screen optimized support in your Unity project is to update the AndroidManifest file to support
+	the OnConfigurationChanged event.  The Unity activity does not expose this event to the C# portion of the engine,
+	and you will need to modify the project by selecting the Export Project option from the Build Settings window.'
+    linkText: More info
+    url: https://developer.android.com/guide/topics/resources/runtime-changes
+  - heading: "Step 0: Export AndroidManifest"
+    text: Project Settings -> Player -> Publishing Settings -> Custom Main Manifest
+    linkText: Android App Manifest
+    url: https://docs.unity3d.com/Manual/android-manifest.html
+  - heading: "Step 1: Export Project"
+    text: After Unity exports the Gradle project, you can import the Gradle project into Android Studio.
+    linkText: Export an Android project
+    url: https://docs.unity3d.com/Manual/android-export-process.html
+  - heading: "Step 2: Modify OnConfigurationChanged event"
+    text: Info here
+    linkText: onConfigurationChanged function
+    url: https://developer.android.com/reference/android/app/Activity#onConfigurationChanged(android.content.res.Configuration)
+  - heading: "Step 3: Create C# handler for event"
+    text: "Changes"
+    linkText: "Call Java and Kotlin plug-in code from C# scripts"
+    url: https://docs.unity3d.com/Manual/android-plugins-java-code-from-c-sharp.html
+  - heading: "Step 4: Build from Android Studio"
+    text: "Changes"
+    linkText: Watch the presentation
+    url: https://www.youtube.com/watch?v=-wms7mDShag
+  - heading: "Alternative!  Custom activity"
+    text: "Custom activity instead of default Unity activity.\n\nTo extend the default Unity activity, you create your own custom activity and set it as the application’s entry point."
+    linkText: Create a custom activity
+    url: https://docs.unity3d.com/Manual/android-custom-activity.html
+	
+  loadedLayout: 1
