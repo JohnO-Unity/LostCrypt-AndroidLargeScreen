@@ -25,10 +25,10 @@ MonoBehaviour:
     text: Project Settings -> Player -> Publishing Settings -> Custom Main Manifest
     linkText: Android App Manifest
     url: https://docs.unity3d.com/Manual/android-manifest.html
-  - heading: "Step 1: Export Project"
-    text: After Unity exports the Gradle project, you can import the Gradle project into Android Studio.
-    linkText: Export an Android project
-    url: https://docs.unity3d.com/Manual/android-export-process.html
+  - heading: "Step 1: Handle Safe Area properly"
+    text: Update root canvas to respond to Safe Area.  This involves adding a component to a root Panel under your main canvas. The GameObject "Panel-SafeArea" demonstrates this in the hierarchy.  The left/right and jump controls are then moved and anchored properly to the bottom left and right of the safe area, respectively.
+    linkText: About Safe Area
+    url: https://docs.unity3d.com/ScriptReference/Screen-safeArea.html
   - heading: "Step 2: Modify OnConfigurationChanged event"
     text: Info here
     linkText: onConfigurationChanged function
@@ -37,11 +37,7 @@ MonoBehaviour:
     text: "Changes"
     linkText: "Call Java and Kotlin plug-in code from C# scripts"
     url: https://docs.unity3d.com/Manual/android-plugins-java-code-from-c-sharp.html
-  - heading: "Step 4: Build from Android Studio"
-    text: "Changes"
-    linkText: Watch the presentation
-    url: https://www.youtube.com/watch?v=-wms7mDShag
-  - heading: "Alternative!  Custom activity"
+  - heading: "Step 4: Update Custom Activity"
     text: "Custom activity instead of default Unity activity.\n\nTo extend the default Unity activity, you create your own custom activity and set it as the application’s entry point."
     linkText: Create a custom activity
     url: https://docs.unity3d.com/Manual/android-custom-activity.html
