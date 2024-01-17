@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(RectTransform))]
 public class SafeZoneUI : MonoBehaviour {
 	private RectTransform rectTransform;
-	public bool debugSafeZone = false;
+	private Rect safeArea = new Rect();
+	private Vector2 anchorMin = Vector2.zero;
+	private Vector2 anchorMax = Vector2.zero;
+
+	public static Action<SafeZoneUI> OnSafeZoneUpdated;
 
 	private void Start() {
 		rectTransform = GetComponent<RectTransform>();
@@ -14,14 +18,14 @@ public class SafeZoneUI : MonoBehaviour {
 			return;
 		}
 
-		ConfigurationManager.OnOrientationChange += ApplySafeZone;
-		ApplySafeZone();
+		ConfigurationManager.ActionOnOrientationChange += ApplySafeZone;
+		ApplySafeZone(null);
 	}
 
-	public void ApplySafeZone() {
-		Rect safeArea = Screen.safeArea;
-		Vector2 anchorMin = safeArea.position;
-		Vector2 anchorMax = safeArea.position + safeArea.size;
+	public void ApplySafeZone(ConfigurationManager.OrientationInfo _) {
+		safeArea = Screen.safeArea;
+		anchorMin = safeArea.position;
+		anchorMax = safeArea.position + safeArea.size;
 
 		if (Screen.width > 0 && Screen.height > 0) {
 			anchorMin.x /= Screen.width;
@@ -35,8 +39,10 @@ public class SafeZoneUI : MonoBehaviour {
 			}
 		}
 
-#if DEBUG
-		Debug.LogFormat("SafeZoneUI updated {0} with screen width/height at {1}/{2} and anchorMin/Max at {3}/{4}, safe area width/height {5}/{6}, original safeArea {7}", gameObject.name, safeArea.width, safeArea.height, anchorMin, anchorMax, Screen.width, Screen.height, safeArea);
-#endif
+		OnSafeZoneUpdated?.Invoke(this);
+	}
+
+	public string GetSafeZoneDebugInfo() {
+		return string.Format("[{8:0.00}] SafeZoneUI updated on GameObject {0}\n   screen width/height at {1}/{2}\n   anchorMin/Max at {3}/{4}\n   safe area width/height {5}/{6}\n   original safeArea:\n    {7}", gameObject.name, safeArea.width, safeArea.height, anchorMin, anchorMax, Screen.width, Screen.height, safeArea, Time.realtimeSinceStartup);
 	}
 }
