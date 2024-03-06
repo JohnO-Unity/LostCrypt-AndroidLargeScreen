@@ -51,7 +51,7 @@ public class PanelOnFold : MonoBehaviour {
 			mainCamera.rect = new Rect(0.0f, yAnchor, 1.0f, 1.0f);
 
 			// ...while the panelRect is set on the lower portion of the screen.
-			// Since panelRect is set to render as a ScreenSpace-Camera, let the camera rect detemine render size
+			// Since panelRect is set to render as a ScreenSpace-Camera, let the camera rect determine render size
 			splitFillCamera.rect = new Rect(0.0f, -yAnchor, 1.0f, 1.0f);
 			
 			panelRect.gameObject.SetActive(true);
