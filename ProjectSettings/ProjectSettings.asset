@@ -67,14 +67,14 @@ PlayerSettings:
   disableDepthAndStencilBuffers: 0
   androidStartInFullscreen: 1
   androidRenderOutsideSafeArea: 1
-  androidUseSwappy: 1
+  androidUseSwappy: 0
   androidBlitType: 0
   androidResizableWindow: 1
   androidDefaultWindowWidth: 1800
   androidDefaultWindowHeight: 900
   androidMinimumWindowWidth: 1800
   androidMinimumWindowHeight: 900
-  androidFullscreenMode: 1
+  androidFullscreenMode: 3
   defaultIsNativeResolution: 0
   macRetinaSupport: 1
   runInBackground: 1
@@ -142,6 +142,7 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 11400000, guid: 61f9259079b40d9428bbe754ec1960ef, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -157,9 +158,9 @@ PlayerSettings:
   m_ColorGamuts: 00000000
   targetPixelDensity: 150
   resolutionScalingMode: 2
-  resetResolutionOnWindowResize: 0
+  resetResolutionOnWindowResize: 1
   androidSupportedAspectRatio: 0
-  androidMaxAspectRatio: 50
+  androidMaxAspectRatio: 2
   applicationIdentifier:
     Android: com.unity.lostcrypt.folding
     Standalone: com.Unity.Unity-Lost-Crypt-Large-Screen-Example
