@@ -6,17 +6,20 @@ public class CameraAspectLock : MonoBehaviour
 	[Range(0.5f, 2.2f)]
 	public float maintainAspect = 1.0f;
 	private Camera _camera;
+    private ConfigurationManager configurationManager;
 
-	private void Awake() {
+    private void Awake() {
 		_camera = GetComponent<Camera>();
-	}
+        configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
+            .GetComponent(typeof(ConfigurationManager));
+    }
 
 	private void Start() {
-		ConfigurationManager.ActionOnOrientationChange += OnOrientationChange;
+        configurationManager.ActionOnOrientationChange += OnOrientationChange;
 	}
 
 	private void OnDestroy() {
-		ConfigurationManager.ActionOnOrientationChange -= OnOrientationChange;
+        configurationManager.ActionOnOrientationChange -= OnOrientationChange;
 	}
 
 	void OnOrientationChange(ConfigurationManager.OrientationInfo info) {
