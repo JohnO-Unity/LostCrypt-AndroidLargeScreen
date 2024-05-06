@@ -7,6 +7,8 @@ import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Bundle;
+import android.os.Build;
+import android.view.WindowManager;
 import android.util.Log;
 import android.view.Display;
 import android.util.DisplayMetrics;
@@ -31,6 +33,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
+
+
 import static androidx.core.content.ContextCompat.getSystemService;
 
 
@@ -51,12 +56,18 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         mContext = this;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+        }
+
         wit = new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.Companion.getOrCreate(this));
     }
 
     @Override
 	public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
         Log.d(TAG, newConfig.toString());
 
         // winConfig={ mBounds=Rect(0, 0 - 1080, 2092) mAppBounds=Rect(0, 0 - 1080, 1896) mMaxBounds=Rect(0, 0 - 1080, 2092) mDisplayRotation=ROTATION_180 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_180}}
