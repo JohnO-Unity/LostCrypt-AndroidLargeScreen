@@ -112,7 +112,7 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
         }  
     }
 
-    protected void HandleFoldingFeatures(FoldingFeature foldingFeature) {
+    protected void HandleFoldingFeatures(FoldingFeature foldingFeature) {        
          try {
             JSONObject json = new JSONObject();
             if (foldingFeature != null) {
