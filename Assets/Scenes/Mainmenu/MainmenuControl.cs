@@ -27,6 +27,13 @@ public class MainmenuControlOnFold : MonoBehaviour
     public Button cancelButtonL;
     public UnityEngine.UI.ScrollRect textViewL;
 
+    public Button originalH;
+    public Button anchoringH;
+    public Button hingeH;
+    public Button confirmButtonH;
+    public Button cancelButtonH;
+    public UnityEngine.UI.ScrollRect textViewH;
+
     private static readonly String ORIGINAL_TEXT = "To start, it's essential to implement support for " +
         "various aspect ratios in your Android Large Screen application. This ensures your " +
         "game or application appears correctly across different screen sizes. To do this, " +
@@ -67,7 +74,6 @@ public class MainmenuControlOnFold : MonoBehaviour
         SetButtonsListeners();
         configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
             .GetComponent(typeof(ConfigurationManager));
-        configurationManager.ActionOnFoldChange += OnFoldChange;
         configurationManager.ActionOnOrientationChange += OnOrientationChange;        
         isConfirmState = false;
         UpdateButtonOnStateChange();
@@ -180,10 +186,6 @@ public class MainmenuControlOnFold : MonoBehaviour
         ResetButtonsPosition(info.orientation);
     }
 
-    private void OnFoldChange(ConfigurationManager.FoldInfo info)
-    {
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -193,6 +195,5 @@ public class MainmenuControlOnFold : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
