@@ -6,24 +6,12 @@ public class CameraAspectLock : MonoBehaviour
 	[Range(0.5f, 2.2f)]
 	public float maintainAspect = 1.0f;
 	private Camera _camera;
-    private ConfigurationManager configurationManager;
 
     private void Awake() {
 		_camera = GetComponent<Camera>();
-        configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
-            .GetComponent(typeof(ConfigurationManager));
     }
 
 	private void Start() {
-        configurationManager.ActionOnOrientationChange += OnOrientationChange;
-	}
-
-	private void OnDestroy() {
-        configurationManager.ActionOnOrientationChange -= OnOrientationChange;
-	}
-
-	void OnOrientationChange(ConfigurationManager.OrientationInfo info) {
-		MaintainAspectRatio();
 	}
 
 #if UNITY_EDITOR
@@ -33,7 +21,7 @@ public class CameraAspectLock : MonoBehaviour
 	}
 #endif
 
-	void MaintainAspectRatio() {
+	public void MaintainAspectRatio() {
 		float scaleScreen = Screen.width / Screen.height;
 		Rect rect = _camera.pixelRect;
 		if (scaleScreen > maintainAspect) {

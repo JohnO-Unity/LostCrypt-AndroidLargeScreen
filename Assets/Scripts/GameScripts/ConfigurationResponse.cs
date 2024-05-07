@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ConfigurationResponse : MonoBehaviour {
     public GameObject rootPauseScreen;
 	public TMPro.TMP_Text labelPauseContinue;
 	public float autoUnpauseTime = 1.0f;
+	public UnityEvent callbackOrientationChange;
 
-	private void Awake() {
+    private void Awake() {
 		UnpauseGame();
 	}
 
@@ -36,7 +38,8 @@ public class ConfigurationResponse : MonoBehaviour {
 		}
 
 		UnpauseGame();
-	}
+        callbackOrientationChange?.Invoke();
+    }
 
 	public void ConditionallyPauseGameOnFoldChange(ConfigurationManager.FoldInfo foldInfo) {
 		// Set pause if we changed from folded to unfolded configurations
