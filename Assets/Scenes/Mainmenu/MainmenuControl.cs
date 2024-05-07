@@ -123,6 +123,7 @@ public class MainmenuControlOnFold : MonoBehaviour
 
     private void ConfirmGotoScene()
     {
+        Time.timeScale = 1.0f;
         switch (targetScene)
         {
             case TARGET_SCENE.ORIGINAL:
