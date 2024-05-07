@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OnScreenControls : MonoBehaviour
 {
     public Canvas controlsCanvas;
+    public Button backButton;
 
     void Awake()
     {
@@ -18,5 +21,13 @@ public class OnScreenControls : MonoBehaviour
 
         if (isMobile)
             Application.targetFrameRate = 60;
+
+        if (backButton)
+        {
+            backButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadSceneAsync("Mainmenu");
+            });
+        }
     }
 }
