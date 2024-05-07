@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.RectTransform;
 
 public class MainmenuControlOnFold : MonoBehaviour
 {
@@ -59,6 +58,16 @@ public class MainmenuControlOnFold : MonoBehaviour
         "The scene then use the PanelOnFold script to control its UI based on the fold status of " +
         "the device such as showing the bottom controller panel when device is on tabletop mode and adjusting the camera.";
 
+    private static readonly String MENU_TEXT = "This project is based on the Unity 2D demonstration project Lost Crypt, " +
+        "it demonstrates how to support large screen resizability in Unity. Large screen and foldable device " +
+        "support requires a number of changes to the Unity build options, as well as considerations in " +
+        "the layout of your Camera and UI canvases. The project contains four different scenes:\r\n\r\n " +
+        "  *Original*: Support for basic resizable feature. \r\n " +
+        "  *Anchoring*: Same as *Original* scene, but adapts to various aspect ratios and avoids the display cutout. \r\n " +
+        "  *HingeAware*: Same as *Anchoring* scene, but supports tabletop mode. \r\n " +
+        "  *Mainmenu*: Starting scene, allows navigation to the other scenes. " +
+        "This scene fully supports all device orientation, fold & unfold, and tabletop mode.";
+
     private enum TARGET_SCENE
     {
         ORIGINAL,
@@ -72,34 +81,43 @@ public class MainmenuControlOnFold : MonoBehaviour
     private void Awake()
     {
         SetButtonsListeners();
+        UpdateButtonOnStateChange();
         configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
             .GetComponent(typeof(ConfigurationManager));
         configurationManager.ActionOnOrientationChange += OnOrientationChange;        
         isConfirmState = false;
-        UpdateButtonOnStateChange();
+        textViewH.transform.GetChild(0).transform.GetChild(0)
+            .GetComponent<TextMeshProUGUI>().SetText(MENU_TEXT);
     }
 
     private void SetButtonsListeners()
     {
         originalP.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ORIGINAL));
         originalL.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ORIGINAL));
+        originalH.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ORIGINAL));
 
         anchoringP.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ANCHORING));
         anchoringL.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ANCHORING));
+        anchoringH.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.ANCHORING));
 
         hingeP.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.HINGE));
         hingeL.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.HINGE));
+        hingeH.onClick.AddListener(() => ChangeToConfirmState(TARGET_SCENE.HINGE));
 
         confirmButtonP.onClick.AddListener(ConfirmGotoScene);
         confirmButtonL.onClick.AddListener(ConfirmGotoScene);
+        confirmButtonH.onClick.AddListener(ConfirmGotoScene);
 
         cancelButtonP.onClick.AddListener(CancelGotoScene);
         cancelButtonL.onClick.AddListener(CancelGotoScene);
+        cancelButtonH.onClick.AddListener(CancelGotoScene);
     }
 
     private void CancelGotoScene()
     {
         isConfirmState = false;
+        textViewH.transform.GetChild(0).transform.GetChild(0)
+            .GetComponent<TextMeshProUGUI>().SetText(MENU_TEXT);
         UpdateButtonOnStateChange();
     }
 
@@ -132,14 +150,17 @@ public class MainmenuControlOnFold : MonoBehaviour
             case TARGET_SCENE.ORIGINAL:
                 textViewP.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ORIGINAL_TEXT);
                 textViewL.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ORIGINAL_TEXT);
+                textViewH.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ORIGINAL_TEXT);
                 break;
             case TARGET_SCENE.ANCHORING:
                 textViewP.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ANCHORING_TEXT);
                 textViewL.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ANCHORING_TEXT);
+                textViewH.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(ANCHORING_TEXT);
                 break;
             case TARGET_SCENE.HINGE:
                 textViewP.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(HINGE_TEXT);
                 textViewL.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(HINGE_TEXT);
+                textViewH.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(HINGE_TEXT);
                 break;
             default:
                 break;
@@ -172,6 +193,9 @@ public class MainmenuControlOnFold : MonoBehaviour
         textViewL.gameObject.SetActive(isConfirmState);        
         cancelButtonL.gameObject.SetActive(isConfirmState);
 
+        confirmButtonH.gameObject.SetActive(isConfirmState);
+        cancelButtonH.gameObject.SetActive(isConfirmState);
+
         originalP.gameObject.SetActive(!isConfirmState);
         anchoringP.gameObject.SetActive(!isConfirmState);
         hingeP.gameObject.SetActive(!isConfirmState);
@@ -179,6 +203,10 @@ public class MainmenuControlOnFold : MonoBehaviour
         originalL.gameObject.SetActive(!isConfirmState);
         anchoringL.gameObject.SetActive(!isConfirmState);
         hingeL.gameObject.SetActive(!isConfirmState);
+
+        originalH.gameObject.SetActive(!isConfirmState);
+        anchoringH.gameObject.SetActive(!isConfirmState);
+        hingeH.gameObject.SetActive(!isConfirmState);
     }
 
     private void OnOrientationChange(ConfigurationManager.OrientationInfo info)
