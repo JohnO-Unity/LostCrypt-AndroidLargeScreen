@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -14,15 +15,23 @@ public class CameraAspectLock : MonoBehaviour
 	private void Start() {
 	}
 
-#if UNITY_EDITOR
 	private void Update() {
-		// In-editor testing can test and simulate orientation changes
-		MaintainAspectRatio();
-	}
-#endif
+        // In-editor testing can test and simulate orientation changes
+	#if UNITY_EDITOR
+		StartCoroutine(MaintainAspectRatio());
+	#endif
+    }
 
-	public void MaintainAspectRatio() {
-		float scaleScreen = Screen.width / Screen.height;
+
+    public void OnConfigurationChanged()
+	{
+        StartCoroutine(MaintainAspectRatio());
+    }
+
+    private IEnumerator MaintainAspectRatio()
+    {
+
+        float scaleScreen = Screen.width / Screen.height;
 		Rect rect = _camera.pixelRect;
 		if (scaleScreen > maintainAspect) {
 			// use height, lock width to max at aspect scale
@@ -47,6 +56,9 @@ public class CameraAspectLock : MonoBehaviour
 
 		rect.x = Mathf.Floor((Screen.width - rect.width) * 0.5f);
 		rect.y = Mathf.Floor((Screen.height - rect.height) * 0.5f);
-		_camera.pixelRect = rect;
+
+        yield return null;
+
+        _camera.pixelRect = rect;        
 	}
 }
