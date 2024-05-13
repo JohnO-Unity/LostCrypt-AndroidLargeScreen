@@ -5650,7 +5650,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1223917214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1460031422}
+        m_TargetAssemblyTypeName: OnScreenControls, Assembly-CSharp
+        m_MethodName: BackToMainmenuScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1223917214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6571,6 +6583,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1460031420}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1460031422 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 727782449407591131, guid: 4bedf3127b3e64580bd112a7a1f4244c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1460031420}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ede6bafb4b344169b069abbead3b3e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1497350387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9952,7 +9976,7 @@ PrefabInstance:
     - target: {fileID: 4401863854545358135, guid: 6cfaadcb953af1c448a1b82b94f47442,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -43.86103
+      value: -42.527695
       objectReference: {fileID: 0}
     - target: {fileID: 4401863854545358135, guid: 6cfaadcb953af1c448a1b82b94f47442,
         type: 3}
