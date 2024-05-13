@@ -50,6 +50,8 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
     WindowLayoutInfo lastLayoutInfo = null;
     FoldingFeature lastFoldingFeature = null;
     WindowInfoTrackerCallbackAdapter wit;
+    private final LayoutStateChangeCallback layoutStateChangeCallback =
+            new LayoutStateChangeCallback();
 	
 
     @Override
@@ -61,14 +63,14 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
             getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
         }
 
-        wit = new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.Companion.getOrCreate(this));
+        wit = new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));
     }
 
     @Override
 	public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Log.d(TAG, newConfig.toString());
+        Log.d(TAG, "on Configuration changed: " + newConfig.toString());
 
         // winConfig={ mBounds=Rect(0, 0 - 1080, 2092) mAppBounds=Rect(0, 0 - 1080, 1896) mMaxBounds=Rect(0, 0 - 1080, 2092) mDisplayRotation=ROTATION_180 mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_180}}
         try {
@@ -146,25 +148,34 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        wit.addWindowLayoutInfoListener(this, runOnUiThreadExecutor(), (newLayoutInfo -> {
-            lastLayoutInfo = newLayoutInfo;
+        wit.addWindowLayoutInfoListener(
+            this, Runnable::run, layoutStateChangeCallback);
+    }
 
-            lastFoldingFeature = null;
-            if (newLayoutInfo.getDisplayFeatures().size() > 0) {
-                newLayoutInfo.getDisplayFeatures().forEach(displayFeature -> {
-                    FoldingFeature foldingFeature = (FoldingFeature)displayFeature;
-                    if (foldingFeature != null)
-                    {   // only set if it's a fold, not other feature type. only works for single-fold devices.
-                        lastFoldingFeature = foldingFeature;
-                        HandleFoldingFeatures(foldingFeature);
-        				Log.d(TAG, "Fold changed: " + foldingFeature.toString());
+    @Override
+    protected void onStop() {
+        super.onStop();
+        wit.removeWindowLayoutInfoListener(layoutStateChangeCallback);
+    }
 
-                    } else {
-        				Log.d(TAG, "Fold changed: [Closed]");
-                    }
-                });
-            }
-        }));
+    protected void onLayoutStateChange(WindowLayoutInfo newLayoutInfo){
+        lastLayoutInfo = newLayoutInfo;
+
+        lastFoldingFeature = null;
+        if (newLayoutInfo.getDisplayFeatures().size() > 0) {
+            newLayoutInfo.getDisplayFeatures().forEach(displayFeature -> {
+                FoldingFeature foldingFeature = (FoldingFeature)displayFeature;
+                if (foldingFeature != null)
+                {   // only set if it's a fold, not other feature type. only works for single-fold devices.
+                    lastFoldingFeature = foldingFeature;
+                    HandleFoldingFeatures(foldingFeature);
+                    Log.d(TAG, "Fold changed: " + foldingFeature.toString());
+
+                } else {
+                    Log.d(TAG, "Fold changed: [Closed]");
+                }
+            });
+        }  
     }
 
     Executor runOnUiThreadExecutor()
@@ -185,4 +196,14 @@ public class LargeScreenPlayableActivity extends UnityPlayerActivity {
     {
         return lastFoldingFeature;
     }
+
+    class LayoutStateChangeCallback implements Consumer<WindowLayoutInfo> {
+    @Override
+    public void accept(WindowLayoutInfo newLayoutInfo) {
+        // Use newLayoutInfo to update the Layout
+        LargeScreenPlayableActivity.this.runOnUiThread( () -> {
+           LargeScreenPlayableActivity.this.onLayoutStateChange(newLayoutInfo);
+       });
+    }
+}
 }
