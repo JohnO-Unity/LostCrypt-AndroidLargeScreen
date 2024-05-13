@@ -171,7 +171,6 @@ public class MainmenuControlOnFold : MonoBehaviour
 
     private void ResetButtonsPosition(string orientation)
     {
-        Debug.Log("reset button: " + orientation);
         if (orientation.Equals("ORIENTATION_PORTRAIT"))
         {
             portraitCanvas.gameObject.SetActive(true);
@@ -218,7 +217,16 @@ public class MainmenuControlOnFold : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ResetButtonsPosition(Screen.orientation == 0 ? "ORIENTATION_PORTRAIT" : "ORIENTATION_LANDSCAPE");
+        String targetOrientation;
+        if (Screen.orientation == ScreenOrientation.Portrait ||
+                Screen.orientation == ScreenOrientation.PortraitUpsideDown) {
+            targetOrientation = "ORIENTATION_PORTRAIT";
+        }
+        else
+        {
+            targetOrientation = "ORIENTATION_LANDSCAPE";
+        }
+        ResetButtonsPosition(targetOrientation);   
     }
 
     // Update is called once per frame
