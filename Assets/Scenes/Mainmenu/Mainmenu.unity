@@ -3718,7 +3718,7 @@ Transform:
   m_GameObject: {fileID: 825979567}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.5277, y: 5.7400007, z: -10}
+  m_LocalPosition: {x: -43.86103, y: 5.7400007, z: -10}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3920,6 +3920,9 @@ MonoBehaviour:
   rootPauseScreen: {fileID: 1029687589}
   labelPauseContinue: {fileID: 2053592352}
   autoUnpauseTime: 1
+  callbackOrientationChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &869777016
 GameObject:
   m_ObjectHideFlags: 0
@@ -4078,7 +4081,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1911403373}
   m_HandleRect: {fileID: 1911403372}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9510,7 +9513,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlsCanvas: {fileID: 0}
-  backButton: {fileID: 0}
 --- !u!114 &727782450799988072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12729,12 +12731,12 @@ PrefabInstance:
     - target: {fileID: 7027970942746272049, guid: 7b1c618e25cfe524784c7092a3be25c7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 424.29688
+      value: 493.9664
       objectReference: {fileID: 0}
     - target: {fileID: 7027970942746272049, guid: 7b1c618e25cfe524784c7092a3be25c7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -44.1542
+      value: -38.5792
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
