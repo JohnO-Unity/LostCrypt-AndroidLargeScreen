@@ -7,6 +7,7 @@ public class SafeZoneUI : MonoBehaviour {
 	private Rect safeArea = new Rect();
 	private Vector2 anchorMin = Vector2.zero;
 	private Vector2 anchorMax = Vector2.zero;
+	private ConfigurationManager configurationManager;
 
 	public static Action<SafeZoneUI> OnSafeZoneUpdated;
 
@@ -18,7 +19,10 @@ public class SafeZoneUI : MonoBehaviour {
 			return;
 		}
 
-		ConfigurationManager.ActionOnOrientationChange += ApplySafeZone;
+		configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
+            .GetComponent(typeof(ConfigurationManager));
+
+        configurationManager.ActionOnOrientationChange += ApplySafeZone;
 		ApplySafeZone(null);
 	}
 

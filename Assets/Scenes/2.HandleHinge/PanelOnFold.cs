@@ -18,11 +18,14 @@ public class PanelOnFold : MonoBehaviour {
 	public List<GameObject> enableOnFold;
 
 	public bool simulateFoldInEditor;
+    private ConfigurationManager configurationManager;
 
-	private void Awake() {
+    private void Awake() {
 		ResetCameras();
-		ConfigurationManager.ActionOnFoldChange += OnFoldChange;
-		ConfigurationManager.ActionOnOrientationChange += OnOrientationChange;
+        configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
+            .GetComponent(typeof(ConfigurationManager));
+        configurationManager.ActionOnFoldChange += OnFoldChange;
+        configurationManager.ActionOnOrientationChange += OnOrientationChange;
 	}
 
 	void ResetCameras() {
@@ -36,7 +39,9 @@ public class PanelOnFold : MonoBehaviour {
 	}
 
 	void OnOrientationChange(ConfigurationManager.OrientationInfo orientationInfo) {
-		if ((orientationInfo.rotation != "ROTATION_90" && orientationInfo.rotation != "ROTATION_270") || ConfigurationManager.getFoldableState == "NONE") {
+		if ((orientationInfo.rotation != "ROTATION_90"
+			&& orientationInfo.rotation != "ROTATION_270")
+			|| configurationManager.getFoldableState == "NONE") {
 			// Check fold state, if it's unknown then reset the cameras
 			ResetCameras();
 		}
@@ -71,7 +76,12 @@ public class PanelOnFold : MonoBehaviour {
 	private void Update() {
 		if (Application.isEditor) {
 			if (simulateFoldInEditor) {
-				OnFoldChange(new ConfigurationManager.FoldInfo() { isSeparating = 1, orientation = "HINGE_ORIENTATION_HORIZONTAL", boundsBottom = Screen.height / 2 });
+				OnFoldChange(new ConfigurationManager.FoldInfo()
+				{
+					isSeparating = 1,
+					orientation = "HINGE_ORIENTATION_HORIZONTAL",
+					boundsBottom = Screen.height / 2
+				});
 				simulateFoldInEditor = false;
 			}
 

@@ -6,12 +6,10 @@ using System.Text;
 using UnityEngine.Events;
 
 public class ConfigurationManager : MonoBehaviour {
-	public static Action<OrientationInfo> ActionOnOrientationChange;
-	public static Action<FoldInfo> ActionOnFoldChange;
+	public Action<OrientationInfo> ActionOnOrientationChange;
+	public Action<FoldInfo> ActionOnFoldChange;
 
-	public static ConfigurationManager Instance { get; private set; } = null;
-	static AndroidJavaObject foldablePlayerActivity = null;
-	static AndroidJavaObject windowMetricsCalculatorObject = null;
+	AndroidJavaObject foldablePlayerActivity = null;
 	public HingeSensor hingeSensor = null;
 
 	// For any scene/inspector based interest in responding to events
@@ -43,7 +41,7 @@ public class ConfigurationManager : MonoBehaviour {
 	}
 
 	void Awake() {
-		Instance = this;
+		Debug.Log("Awake Configuration Manager");
 
 		// Grab a copy of the Android objects that we might reference for foldable activity or hinge info
 		// There are only valid when we interface with our LargeScreenPlayableActivity.java class, and this is only loaded on Android builds
@@ -51,7 +49,6 @@ public class ConfigurationManager : MonoBehaviour {
 			AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 			foldablePlayerActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
 			var staticCalcClass = new AndroidJavaClass("androidx.window.layout.WindowMetricsCalculator");
-			windowMetricsCalculatorObject = staticCalcClass.CallStatic<AndroidJavaObject>("getOrCreate");
 			hingeSensor = HingeSensor.Start();
 		}
 
@@ -60,7 +57,7 @@ public class ConfigurationManager : MonoBehaviour {
 	}
 
 	private void OnDestroy() {
-		Instance = null;
+        Debug.Log("Destroy Configuration Manager");
 		if (Application.platform == RuntimePlatform.Android) {
 			if (null != hingeSensor) {
 				hingeSensor.Dispose();
@@ -91,7 +88,7 @@ public class ConfigurationManager : MonoBehaviour {
 		StartCoroutine(ExecuteOnMainUnityThread(ActionOnFoldChange, info));
 	}
 
-	public static string getFoldableState {
+	public string getFoldableState {
 		get {
 			if (Application.platform == RuntimePlatform.Android) {
 				var foldingFeatureObject = foldablePlayerActivity.Call<AndroidJavaObject>("getFoldingFeature");
