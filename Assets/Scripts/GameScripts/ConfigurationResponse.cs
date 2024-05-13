@@ -6,7 +6,9 @@ using UnityEngine.Events;
 public class ConfigurationResponse : MonoBehaviour {
     public GameObject rootPauseScreen;
 	public TMPro.TMP_Text labelPauseContinue;
-	public float autoUnpauseTime = 1.0f;
+
+    [Range(0.1f, 1.0f)]
+    public float autoUnpauseTime = 1.0f;
 	public UnityEvent callbackOrientationChange;
 
     private void Awake() {

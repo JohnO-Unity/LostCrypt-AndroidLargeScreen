@@ -13,36 +13,39 @@ public class CameraAspectLock : MonoBehaviour
     }
 
 	private void Start() {
-	}
+		MaintainAspectRatio();
+    }
 
 	private void Update() {
         // In-editor testing can test and simulate orientation changes
 	#if UNITY_EDITOR
-		StartCoroutine(MaintainAspectRatio());
+        MaintainAspectRatio();
 	#endif
     }
 
-
     public void OnConfigurationChanged()
 	{
-        StartCoroutine(MaintainAspectRatio());
+		MaintainAspectRatio();
     }
 
-    private IEnumerator MaintainAspectRatio()
+    public void MaintainAspectRatio()
     {
+		int viewWidth = Display.main.systemWidth;
+		int viewHeight = Display.main.systemHeight;
 
-        float scaleScreen = Screen.width / Screen.height;
+        float scaleScreen = viewWidth / (float)viewHeight;
 		Rect rect = _camera.pixelRect;
-		if (scaleScreen > maintainAspect) {
+		
+        if (scaleScreen > maintainAspect) {
 			// use height, lock width to max at aspect scale
-			rect.width = Screen.height * maintainAspect;
-			rect.height = Screen.height;
+			rect.width = viewHeight * maintainAspect;
+			rect.height = viewHeight;
 		} else {
 			// use width, lock height to max at aspect scale
-			rect.width = Screen.width;
-			rect.height = Screen.width / maintainAspect;
+			rect.width = viewWidth;
+			rect.height = viewWidth / maintainAspect;
 		}
-		/*
+        /*
 		var widthFactor = Mathf.Floor(Screen.width / minWidth);
 		var heightFactor = Mathf.Floor(Screen.height / minHeight);
 
@@ -54,11 +57,14 @@ public class CameraAspectLock : MonoBehaviour
 		rect.height = minHeight * factorToUse;
 		*/
 
-		rect.x = Mathf.Floor((Screen.width - rect.width) * 0.5f);
-		rect.y = Mathf.Floor((Screen.height - rect.height) * 0.5f);
+        rect.x = Mathf.Floor((viewWidth - rect.width) * 0.5f);
+		rect.y = Mathf.Floor((viewHeight - rect.height) * 0.5f);
 
-        yield return null;
+        Debug.Log("camera view width = " + rect.width +
+			" height = " + rect.height +
+			" x = " + rect.x +
+			" y = " + rect.y); 
 
-        _camera.pixelRect = rect;        
-	}
+        _camera.pixelRect = rect;
+    }
 }
