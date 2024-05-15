@@ -3821,7 +3821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &842874588
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3919,10 +3919,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootPauseScreen: {fileID: 1029687589}
   labelPauseContinue: {fileID: 2053592352}
-  autoUnpauseTime: 1
+  autoUnpauseTime: 0.25
   callbackOrientationChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1626634860}
+        m_TargetAssemblyTypeName: PanelOnFold, Assembly-CSharp
+        m_MethodName: OnOrientationChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  callbackFoldChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1626634860}
+        m_TargetAssemblyTypeName: PanelOnFold, Assembly-CSharp
+        m_MethodName: OnFoldChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &869777016
 GameObject:
   m_ObjectHideFlags: 0
@@ -4567,35 +4594,11 @@ MonoBehaviour:
   - eventID: 15
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 842874592}
-          m_TargetAssemblyTypeName: ConfigurationResponse, Assembly-CSharp
-          m_MethodName: UnpauseGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - eventID: 4
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 842874592}
-          m_TargetAssemblyTypeName: ConfigurationResponse, Assembly-CSharp
-          m_MethodName: UnpauseGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!850595691 &1047545613
 LightingSettings:
   m_ObjectHideFlags: 0

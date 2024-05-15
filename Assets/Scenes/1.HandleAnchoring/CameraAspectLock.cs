@@ -23,7 +23,7 @@ public class CameraAspectLock : MonoBehaviour
 	#endif
     }
 
-    public void OnConfigurationChanged()
+    public void OnConfigurationChanged(ConfigurationManager.OrientationInfo config)
 	{
 		MaintainAspectRatio();
     }

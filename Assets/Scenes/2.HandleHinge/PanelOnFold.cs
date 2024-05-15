@@ -24,8 +24,6 @@ public class PanelOnFold : MonoBehaviour {
 		ResetCameras();
         configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
             .GetComponent(typeof(ConfigurationManager));
-        configurationManager.ActionOnFoldChange += OnFoldChange;
-        configurationManager.ActionOnOrientationChange += OnOrientationChange;
 	}
 
 	void ResetCameras() {
@@ -38,7 +36,7 @@ public class PanelOnFold : MonoBehaviour {
 		foreach (var go in enableOnFold) { go.SetActive(false); }
 	}
 
-	void OnOrientationChange(ConfigurationManager.OrientationInfo orientationInfo) {
+	public void OnOrientationChange(ConfigurationManager.OrientationInfo orientationInfo) {
 		if ((orientationInfo.rotation != "ROTATION_90"
 			&& orientationInfo.rotation != "ROTATION_270")
 			|| configurationManager.getFoldableState == "NONE") {
@@ -47,7 +45,7 @@ public class PanelOnFold : MonoBehaviour {
 		}
 	}
 
-	void OnFoldChange(ConfigurationManager.FoldInfo foldInfo) {
+	public void OnFoldChange(ConfigurationManager.FoldInfo foldInfo) {
 		// If we are in a separating state and half-opened, split the screen
 		if (foldInfo.isSeparating == 1 && foldInfo.orientation == "HINGE_ORIENTATION_HORIZONTAL") {
 			float yAnchor = (float)foldInfo.boundsBottom / Screen.height;

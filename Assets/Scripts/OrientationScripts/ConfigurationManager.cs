@@ -10,7 +10,6 @@ public class ConfigurationManager : MonoBehaviour {
 	public Action<FoldInfo> ActionOnFoldChange;
 
 	AndroidJavaObject foldablePlayerActivity = null;
-	public HingeSensor hingeSensor = null;
 
 	// For any scene/inspector based interest in responding to events
 	public UnityEvent<OrientationInfo> OnConfigurationChanged;
@@ -49,7 +48,6 @@ public class ConfigurationManager : MonoBehaviour {
 			AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 			foldablePlayerActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
 			var staticCalcClass = new AndroidJavaClass("androidx.window.layout.WindowMetricsCalculator");
-			hingeSensor = HingeSensor.Start();
 		}
 
 		ActionOnOrientationChange += HandleLocalOnConfigurationChanged;
@@ -58,13 +56,6 @@ public class ConfigurationManager : MonoBehaviour {
 
 	private void OnDestroy() {
         Debug.Log("Destroy Configuration Manager");
-		if (Application.platform == RuntimePlatform.Android) {
-			if (null != hingeSensor) {
-				hingeSensor.Dispose();
-				hingeSensor = null;
-			}
-		}
-
 		ActionOnOrientationChange -= HandleLocalOnConfigurationChanged;
 		ActionOnFoldChange -= HandleLocalOnFoldChanged;
 	}
