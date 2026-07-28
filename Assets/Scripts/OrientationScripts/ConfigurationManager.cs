@@ -6,17 +6,18 @@ using System.Text;
 using UnityEngine.Events;
 
 public class ConfigurationManager : MonoBehaviour {
-	public static Action<OrientationInfo> ActionOnOrientationChange;
-	public static Action<FoldInfo> ActionOnFoldChange;
+	public Action<OrientationInfo> ActionOnOrientationChange;
+	public Action<FoldInfo> ActionOnFoldChange;
 
-	public static ConfigurationManager Instance { get; private set; } = null;
-	static AndroidJavaObject foldablePlayerActivity = null;
-	static AndroidJavaObject windowMetricsCalculatorObject = null;
-	public HingeSensor hingeSensor = null;
+	public Action<int> ActionOnDualDisplayAvailabilityChanged;
+
+	AndroidJavaObject foldablePlayerActivity = null;
 
 	// For any scene/inspector based interest in responding to events
 	public UnityEvent<OrientationInfo> OnConfigurationChanged;
 	public UnityEvent<FoldInfo> OnFoldChanged;
+
+	public UnityEvent<int> OnDualDisplayAvailabilityChanged;
 
 	// To use the JsonUtility.FromJson, we start with a serializable struct or class with public fields
 	[System.Serializable]
@@ -43,7 +44,7 @@ public class ConfigurationManager : MonoBehaviour {
 	}
 
 	void Awake() {
-		Instance = this;
+		Debug.Log("Awake Configuration Manager");
 
 		// Grab a copy of the Android objects that we might reference for foldable activity or hinge info
 		// There are only valid when we interface with our LargeScreenPlayableActivity.java class, and this is only loaded on Android builds
@@ -51,25 +52,18 @@ public class ConfigurationManager : MonoBehaviour {
 			AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 			foldablePlayerActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
 			var staticCalcClass = new AndroidJavaClass("androidx.window.layout.WindowMetricsCalculator");
-			windowMetricsCalculatorObject = staticCalcClass.CallStatic<AndroidJavaObject>("getOrCreate");
-			hingeSensor = HingeSensor.Start();
 		}
 
 		ActionOnOrientationChange += HandleLocalOnConfigurationChanged;
 		ActionOnFoldChange += HandleLocalOnFoldChanged;
+		ActionOnDualDisplayAvailabilityChanged += HandleOnDualDisplayAvailabilityChanged;
 	}
 
 	private void OnDestroy() {
-		Instance = null;
-		if (Application.platform == RuntimePlatform.Android) {
-			if (null != hingeSensor) {
-				hingeSensor.Dispose();
-				hingeSensor = null;
-			}
-		}
-
+        Debug.Log("Destroy Configuration Manager");
 		ActionOnOrientationChange -= HandleLocalOnConfigurationChanged;
 		ActionOnFoldChange -= HandleLocalOnFoldChanged;
+		ActionOnDualDisplayAvailabilityChanged -= HandleOnDualDisplayAvailabilityChanged;
 	}
 
 	// This will be called from the OverrideForLargeScreen.java class, from the activity callback onConfigurationChanged
@@ -82,6 +76,35 @@ public class ConfigurationManager : MonoBehaviour {
 		StartCoroutine(ExecuteOnMainUnityThread(ActionOnOrientationChange, info));
 	}
 
+	public bool isDualDisplayAvailable() {
+		bool bAvailable = false;
+		if ( Application.platform == RuntimePlatform.Android ) {
+			bAvailable = foldablePlayerActivity.Call<Boolean>("isDualDisplayAvailable");
+		}
+		Debug.Log("ConfigurationManager.isDualDisplayAvailable: " + bAvailable);
+		return bAvailable;
+	}
+
+	public void onDualDisplayAvailabilityChanged(string strAvailability) {
+		Debug.Log("ConfigurationManager.onDualDisplayAvailabilityChanged : " + strAvailability);
+		int iAvailable = 0;
+		try { 
+			iAvailable = Int32.Parse(strAvailability);
+		} catch ( FormatException e ) {
+			Debug.Log("ConfigurationManager.onDualDisplayAvailabilityChanged: " + e.Message);
+		}
+
+		// Always call the refresh from the main Unity thread, since this is where the UI updates occur
+		StartCoroutine(ExecuteOnMainUnityThread(ActionOnDualDisplayAvailabilityChanged, iAvailable));
+	}
+
+	public void toggleDualDisplay(bool turnOn) {
+		Debug.Log("ConfigurationManager.toggleDualDisplay: " + turnOn);
+		if ( Application.platform == RuntimePlatform.Android ) {
+			foldablePlayerActivity.Call("toggleDualScreenMode", turnOn);
+		}
+	}
+
 	public void onFoldChanged(string strFoldInfo) {
 		FoldInfo info = JsonUtility.FromJson<FoldInfo>(strFoldInfo);
 		Debug.LogFormat(string.Format("orientation: {0}, state: {1}, isSeparating: {2}\n   l/r/t/b: {3}/{4}/{5}/{6}",
@@ -91,7 +114,7 @@ public class ConfigurationManager : MonoBehaviour {
 		StartCoroutine(ExecuteOnMainUnityThread(ActionOnFoldChange, info));
 	}
 
-	public static string getFoldableState {
+	public string getFoldableState {
 		get {
 			if (Application.platform == RuntimePlatform.Android) {
 				var foldingFeatureObject = foldablePlayerActivity.Call<AndroidJavaObject>("getFoldingFeature");
@@ -120,5 +143,9 @@ public class ConfigurationManager : MonoBehaviour {
 	}
 	void HandleLocalOnFoldChanged(FoldInfo info) {
 		OnFoldChanged?.Invoke(info);
+	}
+
+	void HandleOnDualDisplayAvailabilityChanged(int availability) {
+		OnDualDisplayAvailabilityChanged?.Invoke(availability);
 	}
 }

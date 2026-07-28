@@ -13,4 +13,3 @@ After ensuring that your game can adapt to different aspect ratios, the next ste
 
 ### Optimize for Foldable Devices
 With the advent of foldable devices, it's beneficial to add support for these in your game. You can use Android's Jetpack WindowManager to detect the device's folding posture and adjust your game's layout accordingly.  This project provides an example scene called **HingeAware** that contains a _ConfigurationManager_ Monobehaviour and responds to the different folding states of the target device with UnityEvent callbacks.
-

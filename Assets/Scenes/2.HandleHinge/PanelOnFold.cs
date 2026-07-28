@@ -18,11 +18,12 @@ public class PanelOnFold : MonoBehaviour {
 	public List<GameObject> enableOnFold;
 
 	public bool simulateFoldInEditor;
+    private ConfigurationManager configurationManager;
 
-	private void Awake() {
+    private void Awake() {
 		ResetCameras();
-		ConfigurationManager.ActionOnFoldChange += OnFoldChange;
-		ConfigurationManager.ActionOnOrientationChange += OnOrientationChange;
+        configurationManager = (ConfigurationManager)GameObject.Find("ConfigurationManager")
+            .GetComponent(typeof(ConfigurationManager));
 	}
 
 	void ResetCameras() {
@@ -35,14 +36,16 @@ public class PanelOnFold : MonoBehaviour {
 		foreach (var go in enableOnFold) { go.SetActive(false); }
 	}
 
-	void OnOrientationChange(ConfigurationManager.OrientationInfo orientationInfo) {
-		if ((orientationInfo.rotation != "ROTATION_90" && orientationInfo.rotation != "ROTATION_270") || ConfigurationManager.getFoldableState == "NONE") {
+	public void OnOrientationChange(ConfigurationManager.OrientationInfo orientationInfo) {
+		if ((orientationInfo.rotation != "ROTATION_90"
+			&& orientationInfo.rotation != "ROTATION_270")
+			|| configurationManager.getFoldableState == "NONE") {
 			// Check fold state, if it's unknown then reset the cameras
 			ResetCameras();
 		}
 	}
 
-	void OnFoldChange(ConfigurationManager.FoldInfo foldInfo) {
+	public void OnFoldChange(ConfigurationManager.FoldInfo foldInfo) {
 		// If we are in a separating state and half-opened, split the screen
 		if (foldInfo.isSeparating == 1 && foldInfo.orientation == "HINGE_ORIENTATION_HORIZONTAL") {
 			float yAnchor = (float)foldInfo.boundsBottom / Screen.height;
@@ -71,7 +74,12 @@ public class PanelOnFold : MonoBehaviour {
 	private void Update() {
 		if (Application.isEditor) {
 			if (simulateFoldInEditor) {
-				OnFoldChange(new ConfigurationManager.FoldInfo() { isSeparating = 1, orientation = "HINGE_ORIENTATION_HORIZONTAL", boundsBottom = Screen.height / 2 });
+				OnFoldChange(new ConfigurationManager.FoldInfo()
+				{
+					isSeparating = 1,
+					orientation = "HINGE_ORIENTATION_HORIZONTAL",
+					boundsBottom = Screen.height / 2
+				});
 				simulateFoldInEditor = false;
 			}
 
